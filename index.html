@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Base64 Link | Live Encoder & Decoder</title>
+  <meta name="description" content="Instant real-time Base64 link encoder and decoder optimized for desktop and mobile.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Slow Matrix Background Canvas -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <div class="container">
+    <!-- Minimal Header -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Base64<span>Link</span></h1>
+          <span class="badge">Live Sync</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Options Bar -->
+      <div class="tool-bar">
+        <div class="options-group">
+          <label class="toggle-switch" title="Format Base64 for URLs (+/ -> -_)">
+            <input type="checkbox" id="opt-url-safe" checked>
+            <span class="slider"></span>
+            <span class="toggle-label">URL-Safe Base64</span>
+          </label>
+
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-sample">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            Try Sample
+          </button>
+        </div>
+
+        <div class="global-actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-clear-all">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Clear All
+          </button>
+        </div>
+      </div>
+
+      <!-- Synchronized Dual Field Editor -->
+      <div class="editor-grid">
+        <!-- LEFT FIELD: Base64 String -->
+        <div class="card editor-card" id="b64-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="dot b64-dot"></span>
+              <h2>Base64 String</h2>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="icon-btn" id="btn-paste-b64" title="Paste Base64">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span>Paste</span>
+              </button>
+              <button type="button" class="icon-btn highlight" id="btn-copy-b64" title="Copy Base64">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="textarea-wrapper">
+            <textarea
+              id="b64-text"
+              placeholder="Paste or type Base64 string here..."
+              spellcheck="false"
+            ></textarea>
+            <div class="status-bar">
+              <span class="char-count" id="b64-counter">0 chars</span>
+              <span class="status-tag" id="b64-status">Ready</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER: Swap Button -->
+        <div class="swap-divider">
+          <button type="button" class="swap-btn" id="btn-swap" title="Swap left and right contents">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- RIGHT FIELD: Normal Text / Link -->
+        <div class="card editor-card" id="text-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="dot text-dot"></span>
+              <h2>Normal Text / Link</h2>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="icon-btn" id="btn-paste-text" title="Paste text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span>Paste</span>
+              </button>
+              <button type="button" class="icon-btn highlight" id="btn-copy-text" title="Copy text">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="textarea-wrapper">
+            <textarea
+              id="plain-text"
+              placeholder="Paste or type normal link or text here..."
+              spellcheck="false"
+            ></textarea>
+            <div class="status-bar">
+              <span class="char-count" id="text-counter">0 chars</span>
+              <span class="status-tag" id="text-status">Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detected Link Action Card -->
+      <section class="link-card hidden" id="link-preview-card">
+        <div class="link-card-body">
+          <div class="link-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <div class="link-info">
+            <div class="link-badge">Valid URL Detected</div>
+            <a href="#" id="detected-url-link" target="_blank" rel="noopener noreferrer" class="link-url-text">https://example.com</a>
+          </div>
+          <div class="link-actions">
+            <button type="button" class="btn btn-secondary" id="btn-copy-detected">Copy Link</button>
+            <a href="#" id="btn-open-detected" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Open Link
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- History -->
+      <section class="history-section">
+        <div class="history-header">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Recent History
+          </h3>
+          <button type="button" class="text-btn" id="btn-clear-history">Clear History</button>
+        </div>
+        <div class="history-list" id="history-list">
+          <div class="history-empty">No recent conversions yet.</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="alert" aria-live="polite">
+      <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>Base64 Link Tool &bull; Client-Side Privacy &bull; Zero Server Logs</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
