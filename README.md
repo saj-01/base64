@@ -25,8 +25,8 @@ No build step or external npm packages required. Simply serve the directory with
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/base64-link.git
-cd base64-link
+git clone https://github.com/saj-01/base64
+cd base64
 
 # Start local server with Python 3
 python3 -m http.server 8080
