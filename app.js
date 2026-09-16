@@ -1,6 +1,6 @@
 /**
- * Base64 Link Tool - Live Dual Field Synchronizer & Matrix Background
- * Desktop & Mobile Optimized
+ * b64.io - Minimalist Real-Time Base64 Live Encoder & Decoder
+ * Matrix Background & Strict 100dvh Interface
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,8 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const b64Status = document.getElementById('b64-status');
   const textStatus = document.getElementById('text-status');
 
+  const labelTop = document.getElementById('label-top');
+  const labelBottom = document.getElementById('label-bottom');
+
+  const btnSwap = document.getElementById('btn-swap');
+  const btnSettings = document.getElementById('btn-settings');
+  const settingsModal = document.getElementById('settings-modal');
+  const btnCloseModal = document.getElementById('btn-close-modal');
+
   const optUrlSafe = document.getElementById('opt-url-safe');
   const btnSample = document.getElementById('btn-sample');
+  const btnClearHistory = document.getElementById('btn-clear-history');
   const btnClearAll = document.getElementById('btn-clear-all');
 
   const btnPasteB64 = document.getElementById('btn-paste-b64');
@@ -24,28 +33,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPasteText = document.getElementById('btn-paste-text');
   const btnCopyText = document.getElementById('btn-copy-text');
 
-  const btnSwap = document.getElementById('btn-swap');
-
   const linkPreviewCard = document.getElementById('link-preview-card');
   const detectedUrlLink = document.getElementById('detected-url-link');
   const btnOpenDetected = document.getElementById('btn-open-detected');
   const btnCopyDetected = document.getElementById('btn-copy-detected');
 
   const historyList = document.getElementById('history-list');
-  const btnClearHistory = document.getElementById('btn-clear-history');
-
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toast-message');
 
   // Application State
-  let lastActiveField = 'b64'; // 'b64' (Left) or 'text' (Right)
+  let lastActiveField = 'b64'; // 'b64' or 'text'
   let isUpdating = false;
   let history = JSON.parse(localStorage.getItem('base64_matrix_history') || '[]');
 
   const SAMPLE_LINK = 'https://github.com/anthropics/claude-code';
 
   /* ==========================================================================
-     Slow Matrix Rain Canvas Animation
+     Slow Cyberpunk Matrix Rain Canvas Animation
      ========================================================================== */
 
   function initMatrixCanvas() {
@@ -60,14 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Matrix characters (Base64 + Katakana + Numbers)
     const matrixChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/=ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
     const fontSize = 14;
     let columns = Math.max(10, Math.floor(canvas.width / fontSize));
     let drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
 
     let lastTime = 0;
-    const targetFps = 18; // Slow Matrix Rain Speed
+    const targetFps = 18;
     const frameInterval = 1000 / targetFps;
 
     function renderMatrix(currentTime) {
@@ -77,15 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (elapsed < frameInterval) return;
       lastTime = currentTime - (elapsed % frameInterval);
 
-      // Re-calculate columns if window width changes
       const currentCols = Math.max(10, Math.floor(canvas.width / fontSize));
       if (currentCols !== drops.length) {
         columns = currentCols;
         drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
       }
 
-      // Trail fade effect
-      ctx.fillStyle = 'rgba(6, 9, 14, 0.12)';
+      ctx.fillStyle = 'rgba(3, 7, 13, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
@@ -95,11 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        // Leading bright white character
-        if (Math.random() > 0.93) {
+        if (Math.random() > 0.94) {
           ctx.fillStyle = '#ffffff';
         } else {
-          ctx.fillStyle = 'rgba(0, 255, 102, 0.75)'; // Glowing Green Matrix Rain
+          ctx.fillStyle = 'rgba(0, 255, 102, 0.8)';
         }
 
         ctx.fillText(char, x, y);
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     UTF-8 Base64 Engine
+     UTF-8 Base64 Encoding & Decoding Logic
      ========================================================================== */
 
   function encodeBase64(str, urlSafe = false) {
@@ -168,10 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!b64Val.trim()) {
       plainTextEl.value = '';
       textCounter.textContent = '0 chars';
-      textStatus.textContent = 'Ready';
-      textStatus.className = 'status-tag';
-      b64Status.textContent = 'Ready';
-      b64Status.className = 'status-tag';
+      textStatus.textContent = 'READY';
+      textStatus.className = 'status-badge';
+      b64Status.textContent = 'READY';
+      b64Status.className = 'status-badge';
       hideLinkPreview();
       isUpdating = false;
       return;
@@ -182,11 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
       plainTextEl.value = decoded;
       textCounter.textContent = `${decoded.length} chars`;
 
-      b64Status.textContent = 'Valid Base64';
-      b64Status.className = 'status-tag success';
+      b64Status.textContent = 'VALID BASE64';
+      b64Status.className = 'status-badge success';
 
-      textStatus.textContent = isValidHttpUrl(decoded) ? 'Decoded URL' : 'Decoded Text';
-      textStatus.className = 'status-tag success';
+      textStatus.textContent = isValidHttpUrl(decoded) ? 'DECODED URL' : 'DECODED TEXT';
+      textStatus.className = 'status-badge success';
 
       if (isValidHttpUrl(decoded)) {
         showLinkPreview(decoded.trim());
@@ -197,10 +198,10 @@ document.addEventListener('DOMContentLoaded', () => {
       saveToHistory(decoded.trim(), b64Val.trim());
 
     } catch (err) {
-      b64Status.textContent = 'Invalid Base64';
-      b64Status.className = 'status-tag error';
-      textStatus.textContent = 'Decode Error';
-      textStatus.className = 'status-tag error';
+      b64Status.textContent = 'INVALID BASE64';
+      b64Status.className = 'status-badge error';
+      textStatus.textContent = 'DECODE ERROR';
+      textStatus.className = 'status-badge error';
       hideLinkPreview();
     }
 
@@ -219,10 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!plainVal) {
       b64TextEl.value = '';
       b64Counter.textContent = '0 chars';
-      textStatus.textContent = 'Ready';
-      textStatus.className = 'status-tag';
-      b64Status.textContent = 'Ready';
-      b64Status.className = 'status-tag';
+      textStatus.textContent = 'READY';
+      textStatus.className = 'status-badge';
+      b64Status.textContent = 'READY';
+      b64Status.className = 'status-badge';
       hideLinkPreview();
       isUpdating = false;
       return;
@@ -233,11 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
       b64TextEl.value = encoded;
       b64Counter.textContent = `${encoded.length} chars`;
 
-      textStatus.textContent = isValidHttpUrl(plainVal) ? 'Valid URL' : 'Plain Text';
-      textStatus.className = 'status-tag success';
+      textStatus.textContent = isValidHttpUrl(plainVal) ? 'VALID URL' : 'PLAIN TEXT';
+      textStatus.className = 'status-badge success';
 
-      b64Status.textContent = 'Encoded Base64';
-      b64Status.className = 'status-tag success';
+      b64Status.textContent = 'ENCODED BASE64';
+      b64Status.className = 'status-badge success';
 
       if (isValidHttpUrl(plainVal)) {
         showLinkPreview(plainVal.trim());
@@ -248,8 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
       saveToHistory(plainVal.trim(), encoded);
 
     } catch (err) {
-      b64Status.textContent = 'Encoding Error';
-      b64Status.className = 'status-tag error';
+      b64Status.textContent = 'ENCODE ERROR';
+      b64Status.className = 'status-badge error';
       hideLinkPreview();
     }
 
@@ -272,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     History Storage
+     History & Storage
      ========================================================================== */
 
   function saveToHistory(text, b64) {
@@ -296,16 +297,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderHistory() {
     if (history.length === 0) {
-      historyList.innerHTML = '<div class="history-empty">No recent conversions yet.</div>';
+      historyList.innerHTML = '<div class="history-empty">No recent conversions</div>';
       return;
     }
 
     historyList.innerHTML = history.map((item) => `
       <div class="history-item" data-id="${item.id}">
-        <div class="history-item-left">
-          <span class="history-type-badge">${item.isLink ? 'LINK' : 'TEXT'}</span>
-          <span class="history-text" title="${escapeHtml(item.text)}">${escapeHtml(item.text)}</span>
-        </div>
+        <span class="history-text">${escapeHtml(item.text)}</span>
         <span class="text-btn">${item.time}</span>
       </div>
     `).join('');
@@ -319,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
           plainTextEl.value = item.text;
           lastActiveField = 'text';
           syncFromText();
+          closeModal();
           showToast('Loaded from history');
         }
       });
@@ -347,14 +346,34 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => {
       toast.classList.remove('show');
-    }, 2200);
+    }, 2000);
   }
+
+  /* ==========================================================================
+     Modal Controls
+     ========================================================================== */
+
+  function openModal() {
+    settingsModal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    settingsModal.classList.add('hidden');
+  }
+
+  btnSettings.addEventListener('click', openModal);
+  btnCloseModal.addEventListener('click', closeModal);
+
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) {
+      closeModal();
+    }
+  });
 
   /* ==========================================================================
      Event Listeners
      ========================================================================== */
 
-  // Bi-directional live typing listeners
   b64TextEl.addEventListener('input', () => {
     lastActiveField = 'b64';
     syncFromB64();
@@ -370,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else syncFromB64();
   });
 
-  // Paste into Base64 (Left)
+  // Paste into Base64 (Top)
   btnPasteB64.addEventListener('click', async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -378,14 +397,14 @@ document.addEventListener('DOMContentLoaded', () => {
         b64TextEl.value = text;
         lastActiveField = 'b64';
         syncFromB64();
-        showToast('Pasted into Base64 field!');
+        showToast('Pasted into Base64');
       }
     } catch (_) {
       showToast('Clipboard access denied');
     }
   });
 
-  // Paste into Plain Text (Right)
+  // Paste into Plain Text (Bottom)
   btnPasteText.addEventListener('click', async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -393,34 +412,34 @@ document.addEventListener('DOMContentLoaded', () => {
         plainTextEl.value = text;
         lastActiveField = 'text';
         syncFromText();
-        showToast('Pasted into text field!');
+        showToast('Pasted into text');
       }
     } catch (_) {
       showToast('Clipboard access denied');
     }
   });
 
-  // Copy Base64 (Left)
+  // Copy Base64
   btnCopyB64.addEventListener('click', () => {
     if (!b64TextEl.value) {
-      showToast('Nothing to copy!');
+      showToast('Nothing to copy');
       return;
     }
     navigator.clipboard.writeText(b64TextEl.value);
-    showToast('Copied Base64 to clipboard!');
+    showToast('Copied Base64');
   });
 
-  // Copy Plain Text (Right)
+  // Copy Plain Text
   btnCopyText.addEventListener('click', () => {
     if (!plainTextEl.value) {
-      showToast('Nothing to copy!');
+      showToast('Nothing to copy');
       return;
     }
     navigator.clipboard.writeText(plainTextEl.value);
-    showToast('Copied text to clipboard!');
+    showToast('Copied text');
   });
 
-  // Swap Left and Right Contents
+  // Swap Left/Top and Right/Bottom Contents
   btnSwap.addEventListener('click', () => {
     const b64Val = b64TextEl.value;
     const textVal = plainTextEl.value;
@@ -435,15 +454,16 @@ document.addEventListener('DOMContentLoaded', () => {
       lastActiveField = 'b64';
       syncFromB64();
     }
-    showToast('Swapped field contents!');
+    showToast('Swapped fields');
   });
 
-  // Sample Link
+  // Sample Link Button inside Modal
   btnSample.addEventListener('click', () => {
     plainTextEl.value = SAMPLE_LINK;
     lastActiveField = 'text';
     syncFromText();
-    showToast('Sample link loaded!');
+    closeModal();
+    showToast('Loaded sample link');
   });
 
   // Clear All
@@ -454,13 +474,13 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Cleared all fields');
   });
 
-  // Clear History
+  // Clear History inside Modal
   btnClearHistory.addEventListener('click', clearHistory);
 
   // Copy Detected URL
   btnCopyDetected.addEventListener('click', () => {
     navigator.clipboard.writeText(detectedUrlLink.href);
-    showToast('Copied URL to clipboard!');
+    showToast('Copied URL');
   });
 
   // Initialize
