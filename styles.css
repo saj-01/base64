@@ -1,22 +1,24 @@
 /* ==========================================================================
-   b64.io - Strictly Minimalist Cyberpunk 100dvh Base64 Interface
+   b64.io - Cyberpunk Obsidian & Violet/Cyan Glass Theme (100dvh)
    ========================================================================== */
 
 :root {
-  --bg-deep: #03070d;
-  --bg-card: rgba(8, 14, 26, 0.85);
-  --bg-card-hover: rgba(13, 22, 40, 0.95);
-  --bg-input: rgba(4, 8, 16, 0.9);
+  --bg-deep: #05060b;
+  --bg-card: rgba(15, 12, 28, 0.88);
+  --bg-card-hover: rgba(22, 17, 40, 0.95);
+  --bg-input: rgba(8, 7, 16, 0.92);
 
-  --neon-green: #00ff66;
-  --neon-green-glow: rgba(0, 255, 102, 0.35);
-  --neon-green-dim: rgba(0, 255, 102, 0.15);
+  --accent-violet: #a855f7;
+  --accent-violet-glow: rgba(168, 85, 247, 0.35);
+  --accent-violet-dim: rgba(168, 85, 247, 0.15);
 
-  --neon-cyan: #00f3ff;
-  --neon-cyan-glow: rgba(0, 243, 255, 0.35);
+  --accent-cyan: #06b6d4;
+  --accent-cyan-glow: rgba(6, 182, 212, 0.35);
 
-  --border-dim: rgba(0, 255, 102, 0.2);
-  --border-focus: #00ff66;
+  --matrix-green: #00ff66;
+
+  --border-dim: rgba(168, 85, 247, 0.22);
+  --border-focus: #a855f7;
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
@@ -43,7 +45,7 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Background Canvas Layer */
+/* Background Canvas Layer (Green Matrix Rain) */
 #matrix-canvas {
   position: fixed;
   top: 0;
@@ -93,17 +95,17 @@ html, body {
 .brand-code {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--neon-green);
+  color: var(--accent-violet);
   letter-spacing: -0.03em;
-  text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
 .pulse-dot {
   width: 7px;
   height: 7px;
-  background-color: var(--neon-green);
+  background-color: var(--matrix-green);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--neon-green);
+  box-shadow: 0 0 8px var(--matrix-green);
   animation: pulse 2s infinite ease-in-out;
 }
 
@@ -134,10 +136,10 @@ html, body {
 }
 
 .icon-btn-minimal:hover, .icon-btn-minimal:active {
-  color: var(--neon-green);
-  border-color: var(--neon-green);
-  background: var(--neon-green-dim);
-  box-shadow: 0 0 12px var(--neon-green-dim);
+  color: var(--accent-violet);
+  border-color: var(--accent-violet);
+  background: var(--accent-violet-dim);
+  box-shadow: 0 0 12px var(--accent-violet-dim);
 }
 
 /* Editor Main Section */
@@ -145,12 +147,12 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.75rem;
   min-height: 0;
   overflow: hidden;
 }
 
-/* Card Styling */
+/* Card Styling (Cyberpunk Violet Glass Boxes) */
 .card {
   flex: 1;
   display: flex;
@@ -167,14 +169,14 @@ html, body {
 
 .card:focus-within {
   border-color: var(--border-focus);
-  box-shadow: 0 0 20px var(--neon-green-glow);
+  box-shadow: 0 0 22px var(--accent-violet-glow);
 }
 
 .card-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0.85rem;
+  padding: 0.55rem 0.85rem;
   background: rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid var(--border-dim);
   flex-shrink: 0;
@@ -199,14 +201,14 @@ html, body {
   border-radius: 50%;
 }
 
-.green-dot {
-  background: var(--neon-green);
-  box-shadow: 0 0 6px var(--neon-green);
+.violet-dot {
+  background: var(--accent-violet);
+  box-shadow: 0 0 6px var(--accent-violet);
 }
 
 .cyan-dot {
-  background: var(--neon-cyan);
-  box-shadow: 0 0 6px var(--neon-cyan);
+  background: var(--accent-cyan);
+  box-shadow: 0 0 6px var(--accent-cyan);
 }
 
 .card-tools {
@@ -234,13 +236,13 @@ html, body {
 }
 
 .tool-link.highlight {
-  color: var(--neon-green);
-  border-color: rgba(0, 255, 102, 0.3);
-  background: var(--neon-green-dim);
+  color: var(--accent-violet);
+  border-color: rgba(168, 85, 247, 0.35);
+  background: var(--accent-violet-dim);
 }
 
 .tool-link.highlight:hover {
-  background: rgba(0, 255, 102, 0.3);
+  background: rgba(168, 85, 247, 0.35);
   color: #fff;
 }
 
@@ -269,7 +271,7 @@ textarea::placeholder {
   align-items: center;
   justify-content: space-between;
   padding: 0.35rem 0.85rem;
-  background: rgba(4, 8, 16, 0.95);
+  background: rgba(8, 7, 16, 0.95);
   border-top: 1px solid var(--border-dim);
   font-size: 0.7rem;
   flex-shrink: 0;
@@ -286,45 +288,11 @@ textarea::placeholder {
 }
 
 .status-badge.success {
-  color: var(--neon-green);
+  color: var(--accent-cyan);
 }
 
 .status-badge.error {
   color: #ef4444;
-}
-
-/* Swap Row */
-.swap-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  margin: -0.15rem 0;
-  z-index: 5;
-}
-
-.swap-icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-dim);
-  color: var(--neon-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  touch-action: manipulation;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-.swap-icon-btn:hover, .swap-icon-btn:active {
-  background: var(--neon-green);
-  color: var(--bg-deep);
-  transform: scale(1.1);
-  box-shadow: 0 0 16px var(--neon-green);
 }
 
 /* Detected Link Banner */
@@ -332,14 +300,14 @@ textarea::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, rgba(0, 255, 102, 0.12), rgba(0, 243, 255, 0.12));
-  border: 1px solid var(--neon-green);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(6, 182, 212, 0.15));
+  border: 1px solid var(--accent-violet);
   border-radius: 8px;
   padding: 0.45rem 0.75rem;
   margin-top: 0.4rem;
   flex-shrink: 0;
   gap: 0.5rem;
-  box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
   transition: all 0.25s ease;
 }
 
@@ -358,8 +326,8 @@ textarea::placeholder {
 .url-label {
   font-size: 0.65rem;
   font-weight: 700;
-  color: var(--neon-green);
-  background: rgba(0, 255, 102, 0.15);
+  color: var(--accent-violet);
+  background: rgba(168, 85, 247, 0.2);
   padding: 0.15rem 0.35rem;
   border-radius: 4px;
   flex-shrink: 0;
@@ -376,7 +344,7 @@ textarea::placeholder {
 
 .url-text:hover {
   text-decoration: underline;
-  color: var(--neon-cyan);
+  color: var(--accent-cyan);
 }
 
 .detected-link-actions {
@@ -402,19 +370,19 @@ textarea::placeholder {
 
 .btn-micro:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: var(--neon-green);
+  border-color: var(--accent-violet);
 }
 
 .btn-micro.primary {
-  background: var(--neon-green);
-  color: var(--bg-deep);
+  background: var(--accent-violet);
+  color: #fff;
   border: none;
-  box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
 }
 
 .btn-micro.primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 0 14px rgba(0, 255, 102, 0.6);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.6);
 }
 
 /* Modal Drawer / Backdrop */
@@ -424,7 +392,7 @@ textarea::placeholder {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(3, 7, 13, 0.85);
+  background: rgba(5, 6, 11, 0.85);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 100;
@@ -442,10 +410,10 @@ textarea::placeholder {
 .modal-card {
   width: 100%;
   max-width: 440px;
-  background: rgba(8, 14, 26, 0.95);
-  border: 1px solid var(--neon-green);
+  background: rgba(15, 12, 28, 0.95);
+  border: 1px solid var(--accent-violet);
   border-radius: 14px;
-  box-shadow: 0 0 30px rgba(0, 255, 102, 0.25);
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -464,7 +432,7 @@ textarea::placeholder {
 .modal-header h3 {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--neon-green);
+  color: var(--accent-violet);
   letter-spacing: 0.05em;
 }
 
@@ -550,7 +518,7 @@ textarea::placeholder {
 }
 
 input:checked + .slider {
-  background-color: var(--neon-green);
+  background-color: var(--accent-violet);
 }
 
 input:checked + .slider::before {
@@ -578,8 +546,8 @@ input:checked + .slider::before {
 }
 
 .btn-option:hover {
-  border-color: var(--neon-green);
-  background: var(--neon-green-dim);
+  border-color: var(--accent-violet);
+  background: var(--accent-violet-dim);
 }
 
 .btn-option.danger:hover {
@@ -624,8 +592,8 @@ input:checked + .slider::before {
 }
 
 .history-item:hover {
-  border-color: var(--neon-green);
-  background: rgba(0, 255, 102, 0.08);
+  border-color: var(--accent-violet);
+  background: rgba(168, 85, 247, 0.1);
 }
 
 .history-text {
@@ -649,13 +617,13 @@ input:checked + .slider::before {
   left: 50%;
   transform: translate(-50%, 80px);
   background: #0f172a;
-  color: var(--neon-green);
-  border: 1px solid var(--neon-green);
+  color: var(--accent-violet);
+  border: 1px solid var(--accent-violet);
   padding: 0.45rem 1rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
-  box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
   opacity: 0;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 1000;

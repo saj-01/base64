@@ -1,6 +1,6 @@
 /**
- * b64.io - Minimalist Real-Time Base64 Live Encoder & Decoder
- * Matrix Background & Strict 100dvh Interface
+ * b64.io - Cyberpunk Minimalist Base64 Real-Time Encoder & Decoder
+ * Matrix Background & Strict 100dvh Viewport Interface
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,10 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const b64Status = document.getElementById('b64-status');
   const textStatus = document.getElementById('text-status');
 
-  const labelTop = document.getElementById('label-top');
-  const labelBottom = document.getElementById('label-bottom');
-
-  const btnSwap = document.getElementById('btn-swap');
   const btnSettings = document.getElementById('btn-settings');
   const settingsModal = document.getElementById('settings-modal');
   const btnCloseModal = document.getElementById('btn-close-modal');
@@ -50,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const SAMPLE_LINK = 'https://github.com/anthropics/claude-code';
 
   /* ==========================================================================
-     Slow Cyberpunk Matrix Rain Canvas Animation
+     Slow Green Matrix Rain Background Canvas Animation
      ========================================================================== */
 
   function initMatrixCanvas() {
@@ -87,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drops = Array.from({ length: columns }, () => Math.floor(Math.random() * -50));
       }
 
-      ctx.fillStyle = 'rgba(3, 7, 13, 0.15)';
+      ctx.fillStyle = 'rgba(5, 6, 11, 0.15)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
@@ -437,24 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     navigator.clipboard.writeText(plainTextEl.value);
     showToast('Copied text');
-  });
-
-  // Swap Left/Top and Right/Bottom Contents
-  btnSwap.addEventListener('click', () => {
-    const b64Val = b64TextEl.value;
-    const textVal = plainTextEl.value;
-
-    b64TextEl.value = textVal;
-    plainTextEl.value = b64Val;
-
-    if (lastActiveField === 'b64') {
-      lastActiveField = 'text';
-      syncFromText();
-    } else {
-      lastActiveField = 'b64';
-      syncFromB64();
-    }
-    showToast('Swapped fields');
   });
 
   // Sample Link Button inside Modal
