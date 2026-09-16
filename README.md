@@ -1,4 +1,4 @@
-# b64.io — Minimalist Cyberpunk Base64 Converter
+# basex64 — Minimalist Cyberpunk Base64 Converter
 
 A strictly minimalist, single-screen (`100dvh`) real-time Base64 encoder & decoder built with plain HTML, CSS, and Vanilla JavaScript. Features a green Matrix rain canvas animation, bi-directional live typing synchronization, and a Cyberpunk Violet & Cyan glassmorphic box aesthetic.
 
